@@ -1,0 +1,1106 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Base from "../layouts/Base.astro";
+
+import poolDay from "../assets/photos/pool-day.webp";
+import poolNight from "../assets/photos/pool-night.webp";
+import poolMorning from "../assets/photos/pool-morning.webp";
+import ballroomBlue from "../assets/photos/ballroom-blue.webp";
+import ballroomRed from "../assets/photos/ballroom-red.webp";
+import diningBuffet from "../assets/photos/dining-buffet.webp";
+
+/* ----------------------------------------------------------
+   Page content as typed data
+---------------------------------------------------------- */
+interface Feature {
+  num: string;
+  title: string;
+  body: string;
+  icon: "pool" | "leaf" | "rings" | "plate";
+}
+
+const features: Feature[] = [
+  {
+    num: "01",
+    icon: "pool",
+    title: "Open poolside, no key required",
+    body: "Drop in for an afternoon swim or a long lunch by the water. The pool and restaurant welcome day guests — booking a room is optional.",
+  },
+  {
+    num: "02",
+    icon: "rings",
+    title: "The Grand Ballroom",
+    body: "A 150-guest ballroom built for the day you'll keep retelling. Dedicated coordination, in-house catering, and a setting made to be photographed.",
+  },
+  {
+    num: "03",
+    icon: "plate",
+    title: "Kitchen that earns the trip",
+    body: "From easy weeknight plates to full reception menus, the kitchen leans on Sri Lankan flavour with an unhurried, made-to-order rhythm.",
+  },
+  {
+    num: "04",
+    icon: "leaf",
+    title: "Room to breathe",
+    body: "Gardens, a kids' play area, and shaded corners across the grounds in Homagama — space to gather without the city pressing in.",
+  },
+];
+
+interface Shot {
+  id: string;
+  label: string;
+  caption: string;
+  hue: string;
+  src: ImageMetadata;
+  alt: string;
+}
+
+const showcase: Shot[] = [
+  {
+    id: "pool",
+    label: "The Pool Deck",
+    caption: "Sun-warmed mornings, lantern-lit evenings.",
+    hue: "var(--jade-500)",
+    src: poolNight,
+    alt: "The Grand Amalya pool glowing turquoise at night, ringed by the two-storey terrace and warm restaurant lights.",
+  },
+  {
+    id: "ballroom",
+    label: "Grand Ballroom",
+    caption: "Set for 150, dressed for forever.",
+    hue: "var(--brass)",
+    src: ballroomBlue,
+    alt: "The Grand Ballroom laid with round tables, gold chiavari chairs and crystal chandeliers beneath a sapphire-lit ceiling, facing the floral stage.",
+  },
+  {
+    id: "dining",
+    label: "From the Kitchen",
+    caption: "Buffet lines of rice, curries and fresh sides.",
+    hue: "var(--jade-700)",
+    src: diningBuffet,
+    alt: "A buffet line of chafing dishes with vegetable fried rice in the foreground and curries and sides stretching down the counter.",
+  },
+];
+
+interface GalleryShot {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+  tall?: boolean;
+}
+
+const gallery: GalleryShot[] = [
+  {
+    src: poolDay,
+    alt: "The pool under a bright blue sky, framed by palms and the open-sided upper terrace of The Grand Amalya.",
+    caption: "Blue-sky afternoons by the water",
+  },
+  {
+    src: ballroomRed,
+    alt: "The ballroom dressed for a reception with crimson napkins, gold chairs and a magenta-lit floral backdrop.",
+    caption: "Receptions, dressed to impress",
+    tall: true,
+  },
+  {
+    src: poolMorning,
+    alt: "The pool and connected children's pool at first light, mirroring the palms and the surrounding guest rooms.",
+    caption: "Quiet mornings, room to breathe",
+  },
+];
+
+const stats = [
+  { value: "4.0★", label: "from 1,494 guest reviews" },
+  { value: "150", label: "guests in the Grand Ballroom" },
+  { value: "Est.", label: "Homagama, Sri Lanka" },
+];
+---
+
+<Base>
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <div class="shell nav__inner">
+      <a href="#top" class="brand" aria-label="The Grand Amalya, home">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">The Grand <em>Amalya</em></span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#experience">Experience</a>
+        <a href="#spaces">Spaces</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#ballroom">Weddings</a>
+      </nav>
+      <a href="#visit" class="btn btn--ghost nav__cta">Plan a visit</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <div class="hero__water" aria-hidden="true">
+        <span class="ripple" data-parallax="0.08"></span>
+        <span class="ripple ripple--two" data-parallax="0.14"></span>
+        <span class="orb" data-parallax="-0.06"></span>
+      </div>
+
+      <div class="shell hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow" data-reveal>Homagama · Sri Lanka</p>
+          <h1 class="hero__title" data-reveal data-reveal-delay="90">
+            A tropical<br />
+            <span class="hero__accent">retreat,</span> kept<br />
+            delightfully <em>unhurried.</em>
+          </h1>
+          <p class="hero__sub" data-reveal data-reveal-delay="200">
+            Poolside dining, garden corners, and a ballroom made for the big day —
+            The Grand Amalya is the easy answer to "let's go somewhere nice."
+          </p>
+          <div class="hero__actions" data-reveal data-reveal-delay="300">
+            <a href="#visit" class="btn">Reserve a table<span aria-hidden="true">→</span></a>
+            <a href="#ballroom" class="btn btn--ghost">Host your wedding</a>
+          </div>
+
+          <dl class="hero__stats" data-reveal data-reveal-delay="420">
+            {stats.map((s) => (
+              <div class="stat">
+                <dt class="stat__value">{s.value}</dt>
+                <dd class="stat__label">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <figure class="hero__media" data-reveal data-reveal-delay="180" data-parallax="-0.03">
+          <Image
+            src={poolDay}
+            alt="The Grand Amalya's blue pool beneath a bright sky, framed by palms and the open upper terrace."
+            widths={[480, 760, 1000]}
+            sizes="(max-width: 980px) 90vw, 42vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption class="hero__media-tag">
+            <span class="hero__media-dot" aria-hidden="true"></span>
+            Open daily · Pool &amp; restaurant
+          </figcaption>
+        </figure>
+      </div>
+
+
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll</span><i></i>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="experience" id="experience">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow" data-reveal>What you'll find</p>
+          <h2 class="section-title" data-reveal data-reveal-delay="80">
+            Four reasons people<br />keep coming back.
+          </h2>
+        </div>
+
+        <ul class="features">
+          {features.map((f, i) => (
+            <li class="feature" data-reveal data-reveal-delay={String(i * 90)}>
+              <span class="feature__num">{f.num}</span>
+              <span class="feature__icon" aria-hidden="true">
+                {f.icon === "pool" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5S16 18 18 18s2-1.5 4-1.5" stroke-linecap="round"/>
+                    <path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5S16 13 18 13s2-1.5 4-1.5" stroke-linecap="round"/>
+                    <path d="M7 10V5a2 2 0 0 1 4 0M13 10V5a2 2 0 0 1 4 0" stroke-linecap="round"/>
+                  </svg>
+                )}
+                {f.icon === "rings" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <circle cx="9" cy="14" r="6"/><circle cx="15" cy="14" r="6"/>
+                    <path d="m10 3 2 2 2-2M12 5v3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                )}
+                {f.icon === "plate" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>
+                  </svg>
+                )}
+                {f.icon === "leaf" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path d="M11 3C6 4 3 8 3 13c0 4 3 8 8 8 0-7 0-11 8-13-3-3-8-6-8-5Z" stroke-linejoin="round"/>
+                    <path d="M11 21c0-6 2-10 6-13" stroke-linecap="round"/>
+                  </svg>
+                )}
+              </span>
+              <h3 class="feature__title">{f.title}</h3>
+              <p class="feature__body">{f.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ SHOWCASE ============ -->
+    <section class="showcase" id="spaces">
+      <div class="shell showcase__inner">
+        <div class="showcase__intro" data-reveal>
+          <p class="eyebrow">The spaces</p>
+          <h2 class="section-title">Three settings,<br />one easy afternoon.</h2>
+          <p class="showcase__lede">
+            Move from the pool deck to a garden table to the ballroom without
+            ever leaving the grounds. Choose a view and we'll set the scene.
+          </p>
+        </div>
+
+        <div class="showcase__stage" data-reveal data-reveal-delay="120">
+          <div class="stage" data-stage>
+            {showcase.map((s, i) => (
+              <figure
+                class={`stage__panel${i === 0 ? " is-active" : ""}`}
+                data-panel={s.id}
+                style={`--panel-hue:${s.hue}`}
+              >
+                <Image
+                  class="stage__img"
+                  src={s.src}
+                  alt={s.alt}
+                  widths={[480, 760, 1100]}
+                  sizes="(max-width: 860px) 92vw, 56vw"
+                  loading="lazy"
+                />
+                <span class="stage__label">{s.label}</span>
+                <figcaption class="stage__caption">{s.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div class="showcase__thumbs" role="tablist" aria-label="Choose a space">
+            {showcase.map((s, i) => (
+              <button
+                class={`showcase-thumb${i === 0 ? " is-active" : ""}`}
+                data-thumb={s.id}
+                role="tab"
+                aria-selected={i === 0 ? "true" : "false"}
+                type="button"
+              >
+                <span class="showcase-thumb__dot" style={`--panel-hue:${s.hue}`}></span>
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="gallery" id="gallery">
+      <div class="shell">
+        <div class="section-head gallery__head">
+          <p class="eyebrow" data-reveal>Around the grounds</p>
+          <h2 class="section-title" data-reveal data-reveal-delay="80">
+            A look around<br />before you arrive.
+          </h2>
+        </div>
+        <div class="gallery__grid">
+          {gallery.map((g, i) => (
+            <figure
+              class={`gallery__item${g.tall ? " gallery__item--tall" : ""}`}
+              data-reveal
+              data-reveal-delay={String(i * 110)}
+            >
+              <Image
+                class="gallery__img"
+                src={g.src}
+                alt={g.alt}
+                widths={[420, 700, 900]}
+                sizes="(max-width: 760px) 90vw, 32vw"
+                loading="lazy"
+              />
+              <figcaption class="gallery__caption">{g.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BALLROOM / CTA ============ -->
+    <section class="ballroom" id="ballroom">
+      <Image
+        class="ballroom__bg"
+        src={ballroomRed}
+        alt=""
+        aria-hidden="true"
+        widths={[760, 1200, 1600]}
+        sizes="100vw"
+        loading="lazy"
+      />
+      <div class="shell ballroom__inner">
+        <div class="ballroom__copy" data-reveal>
+          <p class="eyebrow">Weddings &amp; celebrations</p>
+          <h2 class="ballroom__title">
+            The Grand Ballroom,<br />set for 150.
+          </h2>
+          <p class="ballroom__body">
+            Couples come for the room and stay for the ease of it — one team,
+            one kitchen, one address handling the day from the first toast to
+            the last dance. Tell us the date; we'll handle the rest.
+          </p>
+          <a href="#visit" class="btn btn--light">Enquire about your date<span aria-hidden="true">→</span></a>
+        </div>
+
+        <aside class="ballroom__card" data-reveal data-reveal-delay="150" aria-label="Guest review">
+          <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+          <blockquote class="ballroom__quote">
+            Today I held my wedding at the Grand Ballroom with 150 guests — it
+            was truly an incredible experience.
+          </blockquote>
+          <p class="ballroom__attr">Sanju P. · Local Guide · ★★★★★</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ VISIT / NEWSLETTER ============ -->
+    <section class="visit" id="visit">
+      <div class="shell visit__inner">
+        <div class="visit__lead" data-reveal>
+          <h2 class="visit__title">Come for an evening.<br />Stay for the night.</h2>
+          <p class="visit__sub">
+            No reservation needed to swim or dine — though for weddings and
+            weekends, a note ahead helps us set the best table.
+          </p>
+        </div>
+
+        <form class="signup" data-reveal data-reveal-delay="120" id="signup">
+          <label class="signup__label" for="email">Get seasonal menus &amp; event dates</label>
+          <div class="signup__row">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="you@email.com"
+              required
+            />
+            <button class="btn" type="submit">Keep me posted</button>
+          </div>
+          <p class="signup__note" data-signup-note role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="shell footer__inner">
+      <div class="footer__brand">
+        <span class="brand__name">The Grand <em>Amalya</em></span>
+        <p class="footer__addr">
+          556 Pitipana–Thalagala Rd, Homagama<br />
+          <a href="tel:+94112748913">011 274 8913</a>
+        </p>
+      </div>
+
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#experience">Experience</a>
+        <a href="#spaces">Spaces</a>
+        <a href="#ballroom">Weddings</a>
+        <a href="#visit">Visit</a>
+      </nav>
+
+      <ul class="footer__social" aria-label="Social links">
+        <li><a href="#" aria-label="Instagram">Instagram</a></li>
+        <li><a href="#" aria-label="Facebook">Facebook</a></li>
+        <li>
+          <a href="https://maps.app.goo.gl/sUJBv1B2fz3j17fe7" aria-label="Find us on Google Maps">Directions</a>
+        </li>
+      </ul>
+    </div>
+    <div class="shell footer__base">
+      <span>© {new Date().getFullYear()} The Grand Amalya</span>
+      <span>Homagama · Western Province</span>
+    </div>
+  </footer>
+</Base>
+
+<script>
+  // ---- Showcase tabs ----
+  const thumbs = document.querySelectorAll<HTMLButtonElement>("[data-thumb]");
+  const panels = document.querySelectorAll<HTMLElement>("[data-panel]");
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const id = thumb.dataset.thumb;
+      thumbs.forEach((t) => {
+        const on = t === thumb;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", String(on));
+      });
+      panels.forEach((p) =>
+        p.classList.toggle("is-active", p.dataset.panel === id)
+      );
+    });
+  });
+
+  // ---- Newsletter (client-side validation only) ----
+  const form = document.querySelector<HTMLFormElement>("#signup");
+  const note = document.querySelector<HTMLElement>("[data-signup-note]");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = form.querySelector<HTMLInputElement>("#email");
+    if (!input || !note) return;
+    if (input.checkValidity()) {
+      note.textContent = `Lovely — we'll write to ${input.value}. See you by the pool.`;
+      note.dataset.state = "ok";
+      form.reset();
+    } else {
+      note.textContent = "That email looks off — mind checking it?";
+      note.dataset.state = "err";
+      input.focus();
+    }
+  });
+</script>
+
+<style>
+  /* ================= NAV ================= */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding-block: 1.1rem;
+    background: color-mix(in srgb, var(--ivory) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid rgba(20, 32, 27, 0.08);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-display);
+    font-size: 1.32rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .brand__name em { color: var(--brass); font-style: italic; }
+  .brand__mark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50% 50% 50% 2px;
+    background: linear-gradient(140deg, var(--jade-500), var(--jade-800));
+    box-shadow: inset 0 0 0 2px var(--brass-soft);
+  }
+  .nav__links {
+    display: flex;
+    gap: 2rem;
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .nav__links a {
+    position: relative;
+    color: var(--ink-soft);
+    transition: color 0.3s var(--ease);
+  }
+  .nav__links a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -5px;
+    width: 100%; height: 1px;
+    background: var(--brass);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease);
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a:hover::after { transform: scaleX(1); }
+  @media (max-width: 760px) {
+    .nav__links { display: none; }
+  }
+
+  /* ================= HERO ================= */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(4rem, 10vh, 9rem);
+    background:
+      radial-gradient(120% 80% at 78% 8%, rgba(94, 155, 130, 0.18), transparent 55%),
+      radial-gradient(90% 70% at 12% 100%, rgba(192, 139, 62, 0.12), transparent 60%),
+      var(--ivory);
+    overflow: hidden;
+  }
+  .hero__water { position: absolute; inset: 0; pointer-events: none; }
+  .ripple {
+    position: absolute;
+    top: -18%; right: -8%;
+    width: 46vw; height: 46vw;
+    max-width: 620px; max-height: 620px;
+    border-radius: 46% 54% 60% 40% / 50% 42% 58% 50%;
+    background: linear-gradient(150deg, var(--jade-300), var(--jade-700));
+    opacity: 0.5;
+    filter: blur(2px);
+    animation: morph 16s var(--ease) infinite;
+  }
+  .ripple--two {
+    top: auto; bottom: -22%; left: -10%; right: auto;
+    width: 34vw; height: 34vw;
+    background: linear-gradient(150deg, var(--brass-soft), var(--brass));
+    opacity: 0.28;
+    animation-duration: 21s;
+    animation-direction: reverse;
+  }
+  .orb {
+    position: absolute;
+    top: 34%; left: 60%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--brass);
+    box-shadow: 0 0 40px 14px var(--brass-glow);
+  }
+  @keyframes morph {
+    0%, 100% { border-radius: 46% 54% 60% 40% / 50% 42% 58% 50%; }
+    50% { border-radius: 60% 40% 42% 58% / 44% 58% 42% 56%; transform: rotate(8deg) scale(1.04); }
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    width: 100%;
+  }
+  .hero__copy {
+    max-width: 60ch;
+    padding-inline-start: clamp(0.75rem, 2.4vw, 2.4rem);
+  }
+  .hero__media {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transform: rotate(1.4deg);
+    transition: transform 0.6s var(--ease);
+  }
+  .hero__media:hover { transform: rotate(0deg) scale(1.01); }
+  .hero__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3.4;
+    object-fit: cover;
+  }
+  .hero__media-tag {
+    position: absolute;
+    left: 1rem; bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.55em 1em;
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--jade-900);
+    background: var(--mist);
+    backdrop-filter: blur(8px);
+    border-radius: 100px;
+  }
+  .hero__media-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--jade-500);
+    box-shadow: 0 0 0 4px rgba(47, 107, 84, 0.25);
+    animation: pulse 2.4s var(--ease) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(47, 107, 84, 0.3); }
+    50% { box-shadow: 0 0 0 7px rgba(47, 107, 84, 0); }
+  }
+  @media (max-width: 980px) {
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__copy { padding-inline-start: clamp(0.35rem, 1.8vw, 0.9rem); }
+    .hero__media { order: -1; transform: none; max-width: 540px; }
+    .hero__media :global(img) { aspect-ratio: 16 / 10; }
+  }
+  .hero__title {
+    font-size: var(--step-4);
+    font-weight: 500;
+    margin-block: 1.1rem 0;
+  }
+  .hero__title em { font-style: italic; font-weight: 400; }
+  .hero__accent {
+    color: var(--brass);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .hero__sub {
+    margin-top: 1.6rem;
+    max-width: 46ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2.2rem;
+  }
+  .hero__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: 3.4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(20, 32, 27, 0.12);
+  }
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    color: var(--jade-700);
+    line-height: 1;
+  }
+  .stat__label {
+    margin-top: 0.35rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    max-width: 18ch;
+  }
+  .hero__scroll {
+    position: absolute;
+    bottom: 1.8rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .hero__scroll i {
+    width: 1px; height: 38px;
+    background: linear-gradient(var(--brass), transparent);
+    animation: drip 2.4s var(--ease) infinite;
+  }
+  @keyframes drip {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    46% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @media (max-width: 900px), (max-height: 760px) {
+    .hero__scroll { display: none; }
+  }
+
+  /* ============ SECTION SHARED ============ */
+  .section-head { max-width: 52ch; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+  .section-title {
+    font-size: var(--step-3);
+    margin-top: 1rem;
+  }
+
+  /* ================= FEATURES ================= */
+  .experience { padding-block: clamp(5rem, 12vh, 9rem); }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.4rem;
+  }
+  .feature {
+    position: relative;
+    padding: 2rem 1.7rem 2.2rem;
+    border-radius: var(--radius);
+    background: linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.55),
+      rgba(233, 226, 212, 0.35)
+    );
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  }
+  .feature:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-card);
+  }
+  /* second feature lifts (asymmetry) */
+  .features .feature:nth-child(2) { transform: translateY(-26px); }
+  .features .feature:nth-child(2):hover { transform: translateY(-34px); }
+  .feature__num {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--brass);
+    letter-spacing: 0.1em;
+  }
+  .feature__icon {
+    display: grid;
+    place-items: center;
+    width: 52px; height: 52px;
+    margin: 1.1rem 0 1.3rem;
+    border-radius: 14px;
+    color: var(--jade-700);
+    background: rgba(47, 107, 84, 0.1);
+  }
+  .feature__icon svg { width: 26px; height: 26px; }
+  .feature__title {
+    font-size: var(--step-1);
+    margin-bottom: 0.6rem;
+  }
+  .feature__body { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.6; }
+  @media (max-width: 980px) {
+    .features { grid-template-columns: repeat(2, 1fr); }
+    .features .feature:nth-child(2) { transform: none; }
+    .features .feature:nth-child(2):hover { transform: translateY(-8px); }
+  }
+  @media (max-width: 560px) {
+    .features { grid-template-columns: 1fr; }
+  }
+
+  /* ================= SHOWCASE ================= */
+  .showcase {
+    padding-block: clamp(5rem, 12vh, 9rem);
+    background:
+      radial-gradient(80% 120% at 100% 0%, rgba(18, 51, 41, 0.06), transparent 50%),
+      var(--ivory-deep);
+  }
+  .showcase__inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .showcase__lede {
+    margin-top: 1.4rem;
+    color: var(--ink-soft);
+    max-width: 38ch;
+  }
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .stage__panel {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.7s var(--ease), transform 0.9s var(--ease);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .stage__panel.is-active { opacity: 1; transform: none; }
+  .stage__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .stage__panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(12, 33, 28, 0.92) 0%,
+      rgba(12, 33, 28, 0.45) 32%,
+      rgba(12, 33, 28, 0.05) 60%
+    );
+  }
+  .stage__label {
+    position: absolute;
+    left: 1.8rem; bottom: 4.2rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    color: var(--ivory);
+    z-index: 2;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
+  }
+  .stage__caption {
+    position: relative;
+    z-index: 2;
+    padding: 1.4rem 1.8rem;
+    color: var(--mist);
+    font-size: var(--step--1);
+  }
+  .showcase__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+  .showcase-thumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6em 1.1em;
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid rgba(20, 32, 27, 0.18);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.35s var(--ease);
+  }
+  .showcase-thumb__dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--panel-hue);
+  }
+  .showcase-thumb:hover { border-color: var(--brass); color: var(--ink); }
+  .showcase-thumb.is-active {
+    color: var(--ivory);
+    background: var(--jade-700);
+    border-color: var(--jade-700);
+  }
+  @media (max-width: 860px) {
+    .showcase__inner { grid-template-columns: 1fr; }
+  }
+
+  /* ================= GALLERY ================= */
+  .gallery { padding-block: clamp(5rem, 12vh, 9rem); }
+  .gallery__head { margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 1.2rem;
+  }
+  .gallery__item {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    aspect-ratio: 4 / 3;
+    transition: transform 0.55s var(--ease), box-shadow 0.55s var(--ease);
+  }
+  .gallery__item--tall {
+    grid-row: span 2;
+    aspect-ratio: 4 / 6.2;
+  }
+  .gallery__item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card);
+  }
+  .gallery__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease);
+  }
+  .gallery__item:hover .gallery__img { transform: scale(1.05); }
+  .gallery__caption {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 1.6rem 1.3rem 1.1rem;
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ivory);
+    background: linear-gradient(transparent, rgba(12, 33, 28, 0.82));
+  }
+  @media (max-width: 760px) {
+    .gallery__grid { grid-template-columns: 1fr 1fr; }
+    .gallery__item--tall { grid-row: span 1; aspect-ratio: 4 / 3; }
+  }
+  @media (max-width: 480px) {
+    .gallery__grid { grid-template-columns: 1fr; }
+  }
+
+
+  .ballroom {
+    position: relative;
+    padding-block: clamp(6rem, 14vh, 11rem);
+    background:
+      radial-gradient(100% 100% at 80% 0%, var(--jade-800), var(--jade-900));
+    color: var(--ivory);
+    overflow: hidden;
+  }
+  .ballroom__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.22;
+    filter: saturate(1.05);
+    mask-image: linear-gradient(105deg, #000 30%, transparent 78%);
+  }
+  .ballroom::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(120% 120% at 78% 0%, rgba(18, 51, 41, 0.35), rgba(12, 33, 28, 0.92));
+  }
+  .ballroom::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: radial-gradient(rgba(217, 181, 116, 0.14) 1px, transparent 1px);
+    background-size: 26px 26px;
+    opacity: 0.5;
+    mask-image: radial-gradient(80% 80% at 50% 30%, #000, transparent);
+  }
+  .ballroom__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .ballroom .eyebrow { color: var(--brass-soft); }
+  .ballroom__title {
+    font-size: var(--step-3);
+    margin-block: 1rem 1.4rem;
+  }
+  .ballroom__body {
+    color: var(--mist);
+    max-width: 42ch;
+    margin-bottom: 2rem;
+  }
+  /* floating glass card overlapping the dark section */
+  .ballroom__card {
+    position: relative;
+    padding: 2.6rem 2.2rem 2.2rem;
+    border-radius: 22px;
+    background: rgba(243, 239, 230, 0.07);
+    border: 1px solid rgba(217, 181, 116, 0.3);
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-card);
+  }
+  .quote-mark {
+    position: absolute;
+    top: -0.4em; left: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--brass);
+    opacity: 0.55;
+    line-height: 1;
+  }
+  .ballroom__quote {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--ivory);
+  }
+  .ballroom__attr {
+    margin-top: 1.4rem;
+    font-size: var(--step--1);
+    color: var(--brass-soft);
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 860px) {
+    .ballroom__inner { grid-template-columns: 1fr; }
+  }
+
+  /* ================= VISIT ================= */
+  .visit { padding-block: clamp(5rem, 12vh, 9rem); }
+  .visit__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .visit__title { font-size: var(--step-3); }
+  .visit__sub {
+    margin-top: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 40ch;
+  }
+  .signup__label {
+    display: block;
+    font-weight: 600;
+    font-size: var(--step--1);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  .signup__row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .signup input {
+    flex: 1 1 220px;
+    padding: 0.95em 1.3em;
+    font: inherit;
+    color: var(--ink);
+    background: var(--ivory);
+    border: 1px solid rgba(20, 32, 27, 0.22);
+    border-radius: 100px;
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .signup input:focus {
+    border-color: var(--brass);
+    box-shadow: 0 0 0 4px var(--brass-glow);
+    outline: none;
+  }
+  .signup__note {
+    margin-top: 0.9rem;
+    font-size: var(--step--1);
+    min-height: 1.4em;
+  }
+  .signup__note[data-state="ok"] { color: var(--jade-500); }
+  .signup__note[data-state="err"] { color: #b4532f; }
+  @media (max-width: 760px) {
+    .visit__inner { grid-template-columns: 1fr; }
+  }
+
+  /* ================= FOOTER ================= */
+  .footer {
+    padding-block: clamp(3rem, 7vh, 5rem) 2rem;
+    background: var(--jade-900);
+    color: var(--mist);
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(243, 239, 230, 0.12);
+  }
+  .footer .brand__name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ivory);
+  }
+  .footer .brand__name em { color: var(--brass-soft); font-style: italic; }
+  .footer__addr { margin-top: 1rem; font-size: var(--step--1); line-height: 1.7; }
+  .footer__addr a { color: var(--brass-soft); }
+  .footer__nav, .footer__social { display: flex; flex-direction: column; gap: 0.7rem; font-size: var(--step--1); }
+  .footer__nav a:hover, .footer__social a:hover { color: var(--ivory); }
+  .footer__base {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: rgba(243, 239, 230, 0.55);
+  }
+  @media (max-width: 700px) {
+    .footer__inner { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+  }
+</style>

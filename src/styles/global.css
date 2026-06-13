@@ -1,0 +1,220 @@
+/* ============================================================
+   THE GRAND AMALYA — Design System
+   Direction: "Tropical Modern Luxe"
+   Botanical jade + warm ivory + polished brass.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* --- Palette --- */
+  --ivory: #f3efe6;          /* warm canvas, never pure white */
+  --ivory-deep: #e9e2d4;
+  --jade-900: #0c211c;       /* near-black botanical green */
+  --jade-800: #123329;
+  --jade-700: #1c4a3b;
+  --jade-500: #2f6b54;
+  --jade-300: #5e9b82;
+  --brass: #c08b3e;          /* polished gold accent */
+  --brass-soft: #d9b574;
+  --brass-glow: rgba(192, 139, 62, 0.35);
+  --ink: #14201b;            /* primary text on light */
+  --ink-soft: #46544c;
+  --mist: rgba(243, 239, 230, 0.72);
+
+  /* --- Type --- */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* --- Scale --- */
+  --step--1: clamp(0.83rem, 0.78rem + 0.2vw, 0.95rem);
+  --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.13rem);
+  --step-1: clamp(1.3rem, 1.2rem + 0.5vw, 1.6rem);
+  --step-2: clamp(1.9rem, 1.6rem + 1.4vw, 2.8rem);
+  --step-3: clamp(2.6rem, 1.9rem + 3.2vw, 4.6rem);
+  --step-4: clamp(3.4rem, 2.1rem + 6vw, 7.5rem);
+
+  /* --- Spacing & motion --- */
+  --gutter: clamp(1.25rem, 0.8rem + 2.2vw, 3.5rem);
+  --radius: 18px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-soft: 0 24px 60px -28px rgba(12, 33, 28, 0.45);
+  --shadow-card: 0 30px 80px -40px rgba(12, 33, 28, 0.6);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--ivory);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+/* --- Shared utilities --- */
+.shell { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brass);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.eyebrow::before {
+  content: "";
+  width: 2.2em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* --- Button micro-interactions --- */
+.btn {
+  --bg: var(--jade-700);
+  --fg: var(--ivory);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.95em 1.8em;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--bg);
+  border-radius: 100px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.45s var(--ease), color 0.4s var(--ease),
+    box-shadow 0.45s var(--ease);
+  will-change: transform;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease);
+  z-index: -1;
+}
+.btn:hover {
+  transform: translateY(-3px) scale(1.025);
+  color: var(--jade-900);
+  box-shadow: 0 18px 36px -16px var(--brass-glow);
+}
+.btn:hover::after { transform: scaleX(1); }
+.btn:focus-visible {
+  outline: 3px solid var(--brass);
+  outline-offset: 3px;
+}
+.btn--ghost {
+  --bg: transparent;
+  --fg: var(--ink);
+  border-color: rgba(20, 32, 27, 0.25);
+}
+.btn--ghost:hover { color: var(--jade-900); }
+.btn--light {
+  --bg: var(--ivory);
+  --fg: var(--jade-900);
+  border-color: var(--ivory);
+}
+
+/* --- Scroll reveal --- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* --- Custom cursor (pointer devices only) --- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+.cursor-dot { width: 7px; height: 7px; background: var(--brass-soft); }
+.cursor-ring {
+  width: 38px; height: 38px;
+  border: 1px solid var(--brass-soft);
+  transition: width 0.3s var(--ease), height 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+.cursor-ring.is-hovering {
+  width: 60px; height: 60px;
+  background: rgba(217, 181, 116, 0.12);
+}
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: absolute;
+  left: 1rem; top: -100%;
+  background: var(--jade-900);
+  color: var(--ivory);
+  padding: 0.7em 1.2em;
+  border-radius: 8px;
+  z-index: 10000;
+  transition: top 0.3s var(--ease);
+}
+.skip-link:focus { top: 1rem; }

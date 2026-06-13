@@ -1,0 +1,121 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "The Grand Amalya — Poolside Dining, Weddings & Stays in Homagama",
+  description = "A tropical-luxe escape in Homagama, Sri Lanka. Grand ballroom weddings, open-air poolside dining, and unhurried stays — no booking required to swim or dine.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0c211c" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="business.business" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <span class="cursor-dot" aria-hidden="true"></span>
+    <span class="cursor-ring" aria-hidden="true"></span>
+
+    <slot />
+
+    <script>
+      // ---- Scroll reveal ----
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if ("IntersectionObserver" in window && reveals.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const el = entry.target as HTMLElement;
+                const delay = el.dataset.revealDelay ?? "0";
+                el.style.transitionDelay = `${delay}ms`;
+                el.classList.add("is-visible");
+                io.unobserve(el);
+              }
+            });
+          },
+          { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+        );
+        reveals.forEach((el) => io.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      // ---- Custom cursor (pointer + motion-allowed only) ----
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const okMotion = !window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (fine && okMotion) {
+        const dot = document.querySelector<HTMLElement>(".cursor-dot");
+        const ring = document.querySelector<HTMLElement>(".cursor-ring");
+        if (dot && ring) {
+          let rx = 0, ry = 0, tx = 0, ty = 0;
+          window.addEventListener("pointermove", (e) => {
+            tx = e.clientX;
+            ty = e.clientY;
+            dot.style.transform = `translate(${tx - 3.5}px, ${ty - 3.5}px)`;
+          });
+          const loop = () => {
+            rx += (tx - rx) * 0.16;
+            ry += (ty - ry) * 0.16;
+            ring.style.transform = `translate(${rx - 19}px, ${ry - 19}px)`;
+            requestAnimationFrame(loop);
+          };
+          requestAnimationFrame(loop);
+
+          const interactive = document.querySelectorAll(
+            'a, button, .feature, .showcase-thumb, input, [data-cursor="hover"]'
+          );
+          interactive.forEach((el) => {
+            el.addEventListener("pointerenter", () =>
+              ring.classList.add("is-hovering")
+            );
+            el.addEventListener("pointerleave", () =>
+              ring.classList.remove("is-hovering")
+            );
+          });
+        }
+      }
+
+      // ---- Hero parallax on floating shapes ----
+      if (okMotion) {
+        const shapes = document.querySelectorAll<HTMLElement>("[data-parallax]");
+        if (shapes.length) {
+          let ticking = false;
+          window.addEventListener("scroll", () => {
+            if (!ticking) {
+              window.requestAnimationFrame(() => {
+                const y = window.scrollY;
+                shapes.forEach((s) => {
+                  const speed = Number(s.dataset.parallax ?? "0.1");
+                  s.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+                });
+                ticking = false;
+              });
+              ticking = true;
+            }
+          }, { passive: true });
+        }
+      }
+    </script>
+  </body>
+</html>
